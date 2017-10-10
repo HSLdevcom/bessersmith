@@ -135,3 +135,4 @@ return(httpServer);
 };
 
 exports.createServer = createServer;
+exports.pad = pad;
