@@ -8,11 +8,18 @@
     "Tuukka Hastrup <Tuukka.Hastrup@iki.fi>",
     "haphut <haphut@gmail.com>"
   ],
+  "scripts": {
+    "test": "mocha"
+  },
   "license": "AGPL-3.0",
   "dependencies": {
     "lodash": "^4.17.4",
     "moment": "^2.19.0",
     "mqtt": "^2.13.0",
     "protobufjs": "^6.8.0"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "mocha": "^4.0.1"
   }
 }
