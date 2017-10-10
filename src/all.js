@@ -68,6 +68,7 @@ function build_feed() {
     };
 }
 
+const createServer = function () {
 trips = {};
 
 mqttConnection = mqtt.connect('mqtt://mqtt.hsl.fi');
@@ -130,4 +131,7 @@ httpServer = http.createServer(function(request, response) {
     response.end();
   }
 });
-httpServer.listen(9009);
+return(httpServer);
+};
+
+exports.createServer = createServer;
