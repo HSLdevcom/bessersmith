@@ -7,10 +7,9 @@ protobuf = require('protobufjs')
 
 _ = require('lodash');
 
-function parseIsoDatetime(datetime) {
-    var dt = datetime.split(/[: T-]/).map(parseFloat);
-    return new Date(Date.UTC(dt[0], dt[1] - 1, dt[2], dt[3] || 0, dt[4] || 0, dt[5] || 0, 0));
-}
+const parseIsoDatetime = (datetime) => {
+    return(moment(datetime, 'YYYY-MM-DDTHH:mm:ss.SSSZZ').toDate());
+};
 
 function pad(number) {
     if (number < 10) return "0"+number; // >
