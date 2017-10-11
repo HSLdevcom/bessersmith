@@ -136,3 +136,4 @@ return(httpServer);
 
 exports.createServer = createServer;
 exports.pad = pad;
+exports.parseIsoDatetime = parseIsoDatetime;
