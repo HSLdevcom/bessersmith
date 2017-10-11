@@ -7,8 +7,8 @@ protobuf = require('protobufjs')
 
 _ = require('lodash');
 
-const parseIsoDatetime = (datetime) => {
-    return(moment(datetime, 'YYYY-MM-DDTHH:mm:ss.SSSZZ').toDate());
+const convertISOStringToUnixSeconds = (datetime) => {
+    return(moment(datetime, 'YYYY-MM-DDTHH:mm:ss.SSSZZ').unix());
 };
 
 function build_feed() {
@@ -44,7 +44,7 @@ function build_feed() {
     return {
         header: {
             gtfsRealtimeVersion: "1.0",
-            timestamp: Math.floor(new Date().getTime()/1000),
+            timestamp: moment().unix(),
         },
         entity: tripUpdates,
     };
@@ -66,12 +66,13 @@ mqttConnection.on('message', function(topic, message) {
             trips[trip] = {};
         trips[trip][data.joreStopId] = {
             stop: stop,
-            scheduled: Math.floor(parseIsoDatetime(data.scheduledDepartureTime).getTime()/1000),
-            predicted: Math.floor(parseIsoDatetime(data.predictedDepartureTime).getTime()/1000),
+            scheduled: convertISOStringToUnixSeconds(data.scheduledDepartureTime),
+            predicted: convertISOStringToUnixSeconds(data.predictedDepartureTime),
         };
         stoptimes = Object.keys(trips[trip]).map(function (key) { return trips[trip][key]; });
     }
 });
+
 
 httpServer = http.createServer(function(request, response) {
   console.log(request.method+" "+request.url);
@@ -115,4 +116,4 @@ return(httpServer);
 };
 
 exports.createServer = createServer;
-exports.parseIsoDatetime = parseIsoDatetime;
+exports.convertISOStringToUnixSeconds = convertISOStringToUnixSeconds;
