@@ -2,12 +2,6 @@ const expect = require('chai').expect;
 
 const all = require('../src/all');
 
-describe('pad', function() {
-  it('should return "10" for the argument 10', function() {
-    expect(all.pad(10)).to.equal("10");
-  });
-});
-
 describe('parseIsoDatetime', () => {
   const isoString = '2017-10-11T08:52:07.150+03:00';
   it('should parse an ISO 8601 datetime+timezone into Date()', () => {

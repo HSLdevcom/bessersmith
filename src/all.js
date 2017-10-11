@@ -11,23 +11,6 @@ const parseIsoDatetime = (datetime) => {
     return(moment(datetime, 'YYYY-MM-DDTHH:mm:ss.SSSZZ').toDate());
 };
 
-function pad(number) {
-    if (number < 10) return "0"+number; // >
-    else return ""+number;
-}
-
-function format_datetime(datetime) {
-    var date = parseIsoDatetime(datetime);
-//    return pad(date.getFullYear())+"-"+pad(date.getMonth()+1)+"-"+pad(date.getDate())+" "+pad(date.getHours())+":"+pad(date.getMinutes())+":"+pad(date.getSeconds());
-    return pad(date.getHours())+":"+pad(date.getMinutes())+":"+pad(date.getSeconds());
-}
-
-function format_jore(code) {
-    if (code.length == 4) return "\u00A0\u00A0"+code;
-    else if (code.length == 5) return "\u00A0"+code;
-    else return code;
-}
-
 function build_feed() {
     tripIds = _.sortBy(Object.keys(trips));
     tripUpdates = tripIds.map(function(tripId) {
@@ -75,7 +58,6 @@ mqttConnection = mqtt.connect('mqtt://mqtt.hsl.fi');
 mqttConnection.subscribe('mono/#', function() { console.log(arguments); });
 mqttConnection.on('message', function(topic, message) {
     var msgdata = JSON.parse(message);
-//    console.log(msgdata);
     for (var i = 0; i < (msgdata.predictions && msgdata.predictions.length || 0); i++) {
         var data = msgdata.predictions[i];
         var trip = data.joreLineId+"_"+data.joreLineDirection+"_"+data.journeyStartTime; // XXX variants
@@ -88,7 +70,6 @@ mqttConnection.on('message', function(topic, message) {
             predicted: Math.floor(parseIsoDatetime(data.predictedDepartureTime).getTime()/1000),
         };
         stoptimes = Object.keys(trips[trip]).map(function (key) { return trips[trip][key]; });
-//        console.log(trip, data.joreStopId, format_datetime(data.scheduledDepartureTime), stoptimes.length);
     }
 });
 
@@ -134,5 +115,4 @@ return(httpServer);
 };
 
 exports.createServer = createServer;
-exports.pad = pad;
 exports.parseIsoDatetime = parseIsoDatetime;
