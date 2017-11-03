@@ -18,11 +18,10 @@ const updateCache = (cache, input) => {
     if (cachedTrip === null) {
       cache.put(tripId, newTripFragment);
     } else {
-      const newTripUpdates = _.unionBy(
-        newTripFragment.tripUpdate.stopTimeUpdate,
-        cachedTrip.tripUpdate.stopTimeUpdate,
-        "stopSequence"
-      );
+      const newTripUpdates = _(newTripFragment.tripUpdate.stopTimeUpdate)
+        .unionBy(cachedTrip.tripUpdate.stopTimeUpdate, "stopSequence")
+        .sortBy("stopSequence")
+        .value();
       const newTrip = newTripFragment;
       newTrip.tripUpdate.stopTimeUpdate = newTripUpdates;
       cache.put(tripId, newTrip);
