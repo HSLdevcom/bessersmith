@@ -12,6 +12,7 @@
     "eslint": "eslint index.js \"src\" \"test\"",
     "eslint-check": "eslint --print-config .eslintrc | eslint-config-prettier-check",
     "prettier": "prettier --write index.js \"src/**/*.js\" \"test/**/*.js\"",
+    "serve": "node index.js",
     "test": "mocha"
   },
   "license": "AGPL-3.0",
