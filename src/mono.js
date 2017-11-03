@@ -5,9 +5,9 @@ const shortFormat = "YYYY-MM-DDTHH:mm:ssZ";
 const useStrictParsing = true;
 
 const parseTime = str => {
-  let m = moment(str, longFormat, useStrictParsing);
+  let m = moment.parseZone(str, longFormat, useStrictParsing);
   if (!m.isValid()) {
-    m = moment(str, shortFormat, useStrictParsing);
+    m = moment.parseZone(str, shortFormat, useStrictParsing);
   }
   return m;
 };
