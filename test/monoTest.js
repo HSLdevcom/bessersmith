@@ -21,6 +21,9 @@ describe("transformMonoMessage", () => {
           {
             stopSequence: 46,
             stopId: "4520260",
+            arrival: {
+              delay: -21
+            },
             departure: {
               delay: -21
             }
@@ -42,6 +45,9 @@ describe("transformMonoMessage", () => {
           {
             stopSequence: 46,
             stopId: "4520260",
+            arrival: {
+              delay: -142
+            },
             departure: {
               delay: -142
             }

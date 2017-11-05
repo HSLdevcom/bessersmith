@@ -53,6 +53,9 @@ const transformMonoMessage = message => {
             stopId,
             departure: {
               delay
+            },
+            arrival: {
+              delay
             }
           }
         ],
