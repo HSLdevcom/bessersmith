@@ -24,7 +24,14 @@ const getFeedMessage = async filename => {
 
 const buildFeed = cache => {
   const sortedTripIds = cache.keys().sort();
-  const tripUpdates = _.map(sortedTripIds, tripId => cache.get(tripId));
+  /**
+   * As we do not have a snapshot of the cache, some values might expire while
+   * we traverse the cache. Filter the nulls out.
+   */
+  const tripUpdates = _(sortedTripIds)
+    .map(tripId => cache.get(tripId))
+    .filter()
+    .value();
   return {
     header: {
       gtfsRealtimeVersion: "1.0",
