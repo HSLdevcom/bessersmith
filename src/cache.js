@@ -12,19 +12,24 @@ const createCache = config => {
   return cache;
 };
 
+const mergeFeedEntities = (cachedEntity, newEntityFragment) => {
+  const mergedUpdates = _(newEntityFragment.tripUpdate.stopTimeUpdate)
+    .unionBy(cachedEntity.tripUpdate.stopTimeUpdate, "stopSequence")
+    .sortBy("stopSequence")
+    .value();
+  // Use new timestamp.
+  const newTrip = newEntityFragment;
+  newTrip.tripUpdate.stopTimeUpdate = mergedUpdates;
+  return newTrip;
+};
+
 const updateCache = (cache, input) => {
-  _.forEach(input, (newTripFragment, tripId) => {
-    const cachedTrip = cache.get(tripId);
-    if (cachedTrip === null) {
-      cache.put(tripId, newTripFragment);
+  _.forEach(input, (newEntityFragment, tripId) => {
+    const cachedEntity = cache.get(tripId);
+    if (cachedEntity === null) {
+      cache.put(tripId, newEntityFragment);
     } else {
-      const newTripUpdates = _(newTripFragment.tripUpdate.stopTimeUpdate)
-        .unionBy(cachedTrip.tripUpdate.stopTimeUpdate, "stopSequence")
-        .sortBy("stopSequence")
-        .value();
-      const newTrip = newTripFragment;
-      newTrip.tripUpdate.stopTimeUpdate = newTripUpdates;
-      cache.put(tripId, newTrip);
+      cache.put(tripId, mergeFeedEntities(cachedEntity, newEntityFragment));
     }
   });
   return cache;
