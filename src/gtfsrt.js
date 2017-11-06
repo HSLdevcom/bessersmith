@@ -2,21 +2,19 @@ const _ = require("lodash");
 const moment = require("moment");
 const protobuf = require("protobufjs");
 
-const getFeedMessage = async filename => {
+const getFeedMessage = async (filename, log) => {
   let root;
   try {
     root = await protobuf.load(filename);
   } catch (err) {
-    // FIXME: log as error
-    console.log(`Loading the protobuf file at ${filename} failed:`, err);
+    log.fatal({ err }, "Loading the protobuf file failed");
     process.exit(1);
   }
   let msg;
   try {
     msg = root.lookupType("transit_realtime.FeedMessage");
   } catch (err) {
-    // FIXME: log as error
-    console.log(`Looking up FeedMessage from ${filename} failed:`, err);
+    log.fatal({ err }, "Looking up FeedMessage from the protobuf file failed");
     process.exit(1);
   }
   return msg;

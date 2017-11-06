@@ -3,7 +3,7 @@ const url = require("url");
 
 const gtfsrt = require("./gtfsrt");
 
-const createServer = (cache, feedMessage) => {
+const createServer = (log, cache, feedMessage) => {
   const httpServer = http.createServer((request, response) => {
     const { query, pathname } = url.parse(request.url, true);
     if (pathname === "/") {
@@ -12,10 +12,13 @@ const createServer = (cache, feedMessage) => {
       response.end();
     } else if (pathname === "/gtfs-rt/trip-updates/pbf") {
       const obj = gtfsrt.buildFeed(cache);
+      // FIXME: Move into tests, do not run in production.
       const verificationErr = feedMessage.verify(obj);
       if (verificationErr) {
-        // FIXME: use in testing
-        console.log("verificationErr", verificationErr);
+        log.error(
+          { err: verificationErr },
+          "Verifying the input for creating the protobuf message failed"
+        );
       }
       const message = feedMessage.create(gtfsrt.buildFeed(cache));
       if (query.debug !== "") {
