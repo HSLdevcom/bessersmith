@@ -20,7 +20,7 @@ const createServer = (log, cache, feedMessage) => {
           "Verifying the input for creating the protobuf message failed"
         );
       }
-      const message = feedMessage.create(gtfsrt.buildFeed(cache));
+      const message = feedMessage.create(obj);
       if (query.debug !== "") {
         response.writeHead(200, { "Content-Type": "application/x-protobuf" });
         response.write(feedMessage.encode(message).finish());
