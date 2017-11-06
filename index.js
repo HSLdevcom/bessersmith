@@ -15,7 +15,7 @@ const run = async config => {
     log.fatal({ err }, "Something weird happened in getFeedMessage");
     process.exit(1);
   }
-  const server = createServer(cache, feedMessage);
+  const server = createServer(log, cache, feedMessage);
   startMQTTSubscription(config.mqtt, log, cache);
   server.listen(config.http.listeningOptions, () => {
     log.info("The HTTP server has been bound");
