@@ -44,17 +44,17 @@ const transformMonoMessage = message => {
         trip: {
           routeId,
           directionId,
-          startDate,
-          startTime
+          startTime,
+          startDate
         },
         stopTimeUpdate: [
           {
             stopSequence,
             stopId,
-            departure: {
+            arrival: {
               delay
             },
-            arrival: {
+            departure: {
               delay
             }
           }
