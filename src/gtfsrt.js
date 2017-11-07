@@ -26,9 +26,11 @@ const buildFeed = cache => {
    * As we do not have a snapshot of the cache, some values might expire while
    * we traverse the cache. Filter the nulls out.
    */
-  const tripUpdates = _(sortedTripIds)
+  const tripUpdates = _.chain(sortedTripIds)
     .map(tripId => cache.get(tripId))
     .filter()
+    .map(_.cloneDeep)
+    .forEach(entity => _(entity.tripUpdate.stopTimeUpdate).forEach(stopTimeUpdate => _.unset(stopTimeUpdate, 'stopSequence')))
     .value();
   return {
     header: {
