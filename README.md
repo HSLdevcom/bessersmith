@@ -18,5 +18,5 @@ yarn test
 
 To run:
 ```sh
-yarn serve
+yarn start
 ```
