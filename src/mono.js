@@ -31,6 +31,7 @@ const transformMonoMessage = message => {
     const scheduled = parseTime(p.scheduledDepartureTime);
     const predicted = parseTime(p.predictedDepartureTime);
     const delay = Math.round(predicted.diff(scheduled, "seconds", true));
+    const time = predicted.unix();
 
     const journeyStart = parseTime(journeyStartStr);
     const startDate = journeyStart.format("YYYYMMDD");
@@ -52,10 +53,12 @@ const transformMonoMessage = message => {
             stopSequence,
             stopId,
             arrival: {
-              delay
+              delay,
+              time
             },
             departure: {
-              delay
+              delay,
+              time
             }
           }
         ],
