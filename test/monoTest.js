@@ -1,4 +1,5 @@
 const { expect } = require("chai");
+const moment = require("moment");
 
 const mono = require("../src/mono");
 
@@ -22,10 +23,12 @@ describe("transformMonoMessage", () => {
             stopSequence: 46,
             stopId: "4520260",
             arrival: {
-              delay: -21
+              delay: -21,
+              time: 1509367719
             },
             departure: {
-              delay: -21
+              delay: -21,
+              time: 1509367719
             }
           }
         ],
@@ -46,10 +49,12 @@ describe("transformMonoMessage", () => {
             stopSequence: 46,
             stopId: "4520260",
             arrival: {
-              delay: -142
+              delay: -142,
+              time: 1509368198
             },
             departure: {
-              delay: -142
+              delay: -142,
+              time: 1509368198
             }
           }
         ],
@@ -64,5 +69,23 @@ describe("transformMonoMessage", () => {
 
   it("should return the expected result for a realistic Mono message", () => {
     expect(mono.transformMonoMessage(monoMessage)).to.deep.equal(result);
+  });
+
+  it("should return consistent delay and time", () => {
+    const shortFormat = "YYYY-MM-DDTHH:mm:ssZ";
+    const useStrictParsing = true;
+    const messages = mono.transformMonoMessage(monoMessage);
+    const doTest = (tripId, scheduledString) => {
+      const update = messages[tripId].tripUpdate.stopTimeUpdate[0];
+      const scheduled = moment
+        .parseZone(scheduledString, shortFormat, useStrictParsing)
+        .unix();
+      expect(update.arrival.time - update.arrival.delay).to.equal(scheduled);
+      expect(update.departure.time - update.departure.delay).to.equal(
+        scheduled
+      );
+    };
+    doTest(tripId1, "2017-10-30T14:49:00+02:00");
+    doTest(tripId2, "2017-10-30T14:59:00+02:00");
   });
 });
