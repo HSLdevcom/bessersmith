@@ -7,6 +7,23 @@ const useStrictParsing = true;
 const parseTime = str =>
   moment.parseZone(str, [longFormat, shortFormat], useStrictParsing);
 
+const formStartDate = str => str.split("-").join("");
+
+const formStartTime = allSeconds => {
+  const convert = x => {
+    if (x < 10) {
+      return `0${x.toString()}`;
+    }
+    return x.toString();
+  };
+
+  const hours = Math.floor(allSeconds / 3600);
+  const minutes = Math.floor(allSeconds / 60) - 60 * hours;
+  const seconds = allSeconds - 3600 * hours - 60 * minutes;
+
+  return `${convert(hours)}:${convert(minutes)}:${convert(seconds)}`;
+};
+
 const routeIdRegExp = /^.{4}[a-zA-Z]*/;
 
 const transformMonoMessage = (log, message) => {
@@ -44,21 +61,8 @@ const transformMonoMessage = (log, message) => {
       .add(delay, "seconds")
       .unix();
 
-    const journeyStart = parseTime(journeyStartStr);
-    let startDate = journeyStart.format("YYYYMMDD");
-    let startTime = journeyStart.format("HH:mm:ss");
-    // FIXME: The first journey of an operating day starts at 03:09, the last
-    //        journey at 28:54. Current Mono message format does not have enough
-    //        information to reliably fix this.
-    if (journeyStart.hours() < 4) {
-      const scheduleDay = journeyStart
-        .clone()
-        .subtract(1, "days")
-        .startOf("day");
-      startDate = scheduleDay.format("YYYYMMDD");
-      // FIXME: This breaks when DST ends, e.g. at 2017-10-29T03:30:00+02:00.
-      startTime = journeyStart.hours() + 24 + journeyStart.format(":mm:ss");
-    }
+    const startDate = formStartDate(p.operatingDay);
+    const startTime = formStartTime(p.journeyStartInSecondsIntoOperatingDay);
 
     // FIXME: The same Mono message cannot contain several predictions for the
     //        same journey. Log a warning if that happens.
