@@ -1,9 +1,26 @@
+const assert = require("assert");
+const fs = require("fs");
 const bunyan = require("bunyan");
+const neodoc = require("neodoc");
+const yaml = require("js-yaml");
 
 const { createCache } = require("./src/cache");
 const { getFeedMessage } = require("./src/gtfsrt");
 const { createServer } = require("./src/http");
 const { startMQTTSubscription } = require("./src/mqtt");
+
+const help = `
+bessersmith
+
+Usage:
+  bessersmith -c <CONFIG_YAML>
+  bessersmith -h | --help
+
+Options:
+  -c --config=<CONFIG_YAML> Specify a YAML configuration file to use.
+  -h --help                 Show this screen.
+  --version                 Show version.
+`;
 
 const run = async config => {
   const log = bunyan.createLogger(config.bunyan);
@@ -22,38 +39,12 @@ const run = async config => {
 };
 
 const main = () => {
-  // FIXME: read config from config file
-  // FIXME: Perhaps log the config sans sensitive material after parsing.
-  const config = {
-    bunyan: {
-      name: "bessersmith",
-      level: "info"
-    },
-    mqtt: {
-      url: "mqtt://mqtt.hsl.fi",
-      connectionOptions: {
-        clientId: `bessersmith_${Math.random()
-          .toString(16)
-          .substr(2, 11)}`,
-        // FIXME: Fix broker settings.
-        // clean: false
-        clean: true
-      },
-      subscriptionOptions: {
-        qos: 1
-      },
-      topic: "mono/v2/predictions/#"
-    },
-    http: {
-      listeningOptions: {
-        port: 8087
-      }
-    },
-    cache: {
-      ttlInSeconds: 60 * 60 * 2
-    },
-    protoFilename: "gtfs-realtime.proto"
-  };
+  const args = neodoc.run(help, { requireFlags: true });
+  const configFilename = args["--config"];
+  if (typeof configFilename === "undefined") {
+    assert.fail("neodoc parsing has failed");
+  }
+  const config = yaml.safeLoad(fs.readFileSync(configFilename, "utf8"));
   Promise.resolve(run(config));
 };
 

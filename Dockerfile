@@ -1,7 +1,8 @@
 FROM node:8-alpine
 
 COPY build .
+COPY config.yaml .
 
 RUN yarn
 
-CMD ["node", "index.js"]
+CMD ["yarn", "start", "-c", "config.yaml"]

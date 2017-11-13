@@ -1,0 +1,17 @@
+bunyan:
+  name: "bessersmith"
+  level: "info"
+mqtt:
+  url: "mqtt://mqtt.hsl.fi"
+  connectionOptions:
+    clientId: "bessersmith_MY_RANDOM_SUFFIX"
+    clean: true
+  subscriptionOptions:
+    qos: 1
+  topic: "mono/dev/predictions/#"
+http:
+  listeningOptions:
+    port: 8087
+cache:
+  ttlInSeconds: 7200
+protoFilename: "gtfs-realtime.proto"

@@ -18,5 +18,8 @@ yarn test
 
 To run:
 ```sh
-yarn start
+cp config.yaml.template config.yaml
+# Modify the configuration
+vim config.yaml
+yarn start -c config.yaml
 ```
