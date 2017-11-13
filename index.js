@@ -12,7 +12,6 @@ const run = async config => {
   try {
     feedMessage = await getFeedMessage(config.protoFilename, log);
   } catch (err) {
-    log.fatal({ err }, "Something weird happened in getFeedMessage");
     process.exit(1);
   }
   const server = createServer(log, cache, feedMessage);

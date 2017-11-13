@@ -8,14 +8,14 @@ const getFeedMessage = async (filename, log) => {
     root = await protobuf.load(filename);
   } catch (err) {
     log.fatal({ err }, "Loading the protobuf file failed");
-    process.exit(1);
+    throw err;
   }
   let msg;
   try {
     msg = root.lookupType("transit_realtime.FeedMessage");
   } catch (err) {
     log.fatal({ err }, "Looking up FeedMessage from the protobuf file failed");
-    process.exit(1);
+    throw err;
   }
   return msg;
 };
