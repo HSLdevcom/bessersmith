@@ -17,7 +17,6 @@ const mergeFeedEntities = (cachedEntity, newEntityFragment) => {
     .unionBy(cachedEntity.tripUpdate.stopTimeUpdate, "stopSequence")
     .sortBy("stopSequence")
     .value();
-  // Use new timestamp.
   const newTrip = _.cloneDeep(newEntityFragment);
   newTrip.tripUpdate.stopTimeUpdate = mergedUpdates;
   return newTrip;
