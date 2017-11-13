@@ -32,6 +32,9 @@ const main = () => {
     mqtt: {
       url: "mqtt://mqtt.hsl.fi",
       connectionOptions: {
+        clientId: `bessersmith_${Math.random()
+          .toString(16)
+          .substr(2, 11)}`,
         // FIXME: Fix broker settings.
         // clean: false
         clean: true
