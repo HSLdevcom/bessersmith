@@ -2,82 +2,130 @@ const { expect } = require("chai");
 const _ = require("lodash");
 const lolex = require("lolex");
 
-const { createCache, updateCache } = require("../src/cache");
+const { createCache, mergeFeedEntities, updateCache } = require("../src/cache");
 
 describe("cache", () => {
-  const tripId1 = "4562_1_2017-10-30T14:02:00+02:00";
-  const tripId2 = "4562_1_2017-10-30T14:12:00+02:00";
-  const input1 = {
-    [tripId1]: {
-      id: tripId1,
-      tripUpdate: {
-        trip: {
-          routeId: "4562",
-          directionId: 0,
-          startTime: "14:02:00",
-          startDate: "20171030"
-        },
-        stopTimeUpdate: [
-          {
-            stopSequence: 46,
-            stopId: "4520260",
-            departure: {
-              delay: -21
-            }
-          }
-        ],
-        timestamp: 1509367654
+  let tripId1;
+  let tripId2;
+  let input1TripId1Stop45;
+  let input1TripId1Stop46;
+  let input2TripId1Stop46;
+  let input1;
+  let input2;
+  let output;
+
+  beforeEach(() => {
+    tripId1 = "4562_1_2017-10-30T14:02:00+02:00";
+    tripId2 = "4562_1_2017-10-30T14:12:00+02:00";
+    input1TripId1Stop45 = {
+      stopSequence: 45,
+      stopId: "4680248",
+      arrival: {
+        delay: -20,
+        time: 1509367660
+      },
+      departure: {
+        delay: -20,
+        time: 1509367660
       }
-    },
-    [tripId2]: {
-      id: tripId2,
-      tripUpdate: {
-        trip: {
-          routeId: "4562",
-          directionId: 0,
-          startDate: "20171030",
-          startTime: "14:12:00"
-        },
-        stopTimeUpdate: [
-          {
-            stopSequence: 46,
-            stopId: "4520260",
-            departure: {
-              delay: -142
-            }
-          }
-        ],
-        timestamp: 1509367654
+    };
+    input1TripId1Stop46 = {
+      stopSequence: 46,
+      stopId: "4520260",
+      arrival: {
+        delay: -21,
+        time: 1509367719
+      },
+      departure: {
+        delay: -21,
+        time: 1509367719
       }
-    }
-  };
-  const input2 = {
-    [tripId1]: {
-      id: tripId1,
-      tripUpdate: {
-        trip: {
-          routeId: "4562",
-          directionId: 0,
-          startTime: "14:02:00",
-          startDate: "20171030"
-        },
-        stopTimeUpdate: [
-          {
-            stopSequence: 46,
-            stopId: "4520260",
-            departure: {
-              delay: -20
-            }
-          }
-        ],
-        timestamp: 1509367659
+    };
+    input2TripId1Stop46 = {
+      stopSequence: 46,
+      stopId: "4520260",
+      arrival: {
+        delay: -20,
+        time: 1509367720
+      },
+      departure: {
+        delay: -20,
+        time: 1509367720
       }
-    }
-  };
-  const output = {
-    [tripId1]: input2[tripId1],
-    [tripId2]: input1[tripId2]
-  };
+    };
+    input1 = {
+      [tripId1]: {
+        id: tripId1,
+        tripUpdate: {
+          trip: {
+            routeId: "4562",
+            directionId: 0,
+            startTime: "14:02:00",
+            startDate: "20171030"
+          },
+          stopTimeUpdate: [input1TripId1Stop45, input1TripId1Stop46],
+          timestamp: 1509367654
+        }
+      },
+      [tripId2]: {
+        id: tripId2,
+        tripUpdate: {
+          trip: {
+            routeId: "4562",
+            directionId: 0,
+            startDate: "20171030",
+            startTime: "14:12:00"
+          },
+          stopTimeUpdate: [
+            {
+              stopSequence: 46,
+              stopId: "4520260",
+              arrival: {
+                delay: -142,
+                time: 1509368198
+              },
+              departure: {
+                delay: -142,
+                time: 1509368198
+              }
+            }
+          ],
+          timestamp: 1509367654
+        }
+      }
+    };
+    input2 = {
+      [tripId1]: {
+        id: tripId1,
+        tripUpdate: {
+          trip: {
+            routeId: "4562",
+            directionId: 0,
+            startTime: "14:02:00",
+            startDate: "20171030"
+          },
+          stopTimeUpdate: [input2TripId1Stop46],
+          timestamp: 1509367659
+        }
+      }
+    };
+    output = {
+      [tripId1]: {
+        id: tripId1,
+        tripUpdate: {
+          trip: {
+            routeId: "4562",
+            directionId: 0,
+            startTime: "14:02:00",
+            startDate: "20171030"
+          },
+          stopTimeUpdate: [input1TripId1Stop45, input2TripId1Stop46],
+          timestamp: 1509367659
+        }
+      },
+      [tripId2]: input1[tripId2]
+    };
+  });
 
   describe("updateCache", () => {
     const cacheOptions = {
@@ -131,6 +179,7 @@ describe("cache", () => {
       clock = lolex.install();
     });
     after(() => clock.uninstall());
+
     const cacheOptions = {
       ttlInSeconds: 0.1
     };
@@ -158,6 +207,34 @@ describe("cache", () => {
       expect(cache.size()).to.equal(1);
       clock.tick(1);
       expect(cache.size()).to.equal(0);
+    });
+  });
+
+  describe("mergeFeedEntities", () => {
+    it("should use the timestamp of the latest update", () => {
+      const cachedEntity = input1[tripId1];
+      const newEntityFragment = input2[tripId1];
+      const merged = mergeFeedEntities(cachedEntity, newEntityFragment);
+      expect(merged.tripUpdate.timestamp).to.equal(
+        newEntityFragment.tripUpdate.timestamp
+      );
+    });
+
+    it("should not modify any inputs", () => {
+      const cachedEntity = input1[tripId1];
+      const newEntityFragment = input2[tripId1];
+      const cachedClone = _.cloneDeep(cachedEntity);
+      const newClone = _.cloneDeep(newEntityFragment);
+      mergeFeedEntities(cachedEntity, newEntityFragment);
+      expect(cachedEntity).to.deep.equal(cachedClone);
+      expect(newEntityFragment).to.deep.equal(newClone);
+    });
+
+    it("should update what can be updated and retain the rest", () => {
+      const cachedEntity = input1[tripId1];
+      const newEntityFragment = input2[tripId1];
+      const merged = mergeFeedEntities(cachedEntity, newEntityFragment);
+      expect(merged).to.deep.equal(output[tripId1]);
     });
   });
 });

@@ -36,4 +36,5 @@ const updateCache = (cache, input) => {
 };
 
 exports.createCache = createCache;
+exports.mergeFeedEntities = mergeFeedEntities;
 exports.updateCache = updateCache;
