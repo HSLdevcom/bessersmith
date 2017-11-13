@@ -11,16 +11,16 @@ const createServer = (log, cache, feedMessage) => {
       response.write("Nothing to see here");
       response.end();
     } else if (pathname === "/gtfs-rt/trip-updates/pbf") {
-      const obj = gtfsrt.buildFeed(cache);
+      const feed = gtfsrt.buildFeed(cache);
       // FIXME: Move into tests, do not run in production.
-      const verificationErr = feedMessage.verify(obj);
+      const verificationErr = feedMessage.verify(feed);
       if (verificationErr) {
         log.error(
           { err: verificationErr },
           "Verifying the input for creating the protobuf message failed"
         );
       }
-      const message = feedMessage.create(obj);
+      const message = feedMessage.create(feed);
       if (query.debug !== "") {
         response.writeHead(200, { "Content-Type": "application/x-protobuf" });
         response.write(feedMessage.encode(message).finish());
