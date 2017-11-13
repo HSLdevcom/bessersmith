@@ -38,12 +38,16 @@ const transformMonoMessage = message => {
     const journeyStart = parseTime(journeyStartStr);
     let startDate = journeyStart.format("YYYYMMDD");
     let startTime = journeyStart.format("HH:mm:ss");
+    // FIXME: The first journey of an operating day starts at 03:09, the last
+    //        journey at 28:54. Current Mono message format does not have enough
+    //        information to reliably fix this.
     if (journeyStart.hours() < 4) {
       const scheduleDay = journeyStart
         .clone()
         .subtract(1, "days")
         .startOf("day");
       startDate = scheduleDay.format("YYYYMMDD");
+      // FIXME: This breaks when DST ends, e.g. at 2017-10-29T03:30:00+02:00.
       startTime = journeyStart.hours() + 24 + journeyStart.format(":mm:ss");
     }
 
