@@ -7,11 +7,25 @@ const useStrictParsing = true;
 const parseTime = str =>
   moment.parseZone(str, [longFormat, shortFormat], useStrictParsing);
 
-const transformMonoMessage = message => {
-  const parsed = JSON.parse(message);
+const routeIdRegExp = /^.{4}[a-zA-Z]*/;
+
+const transformMonoMessage = (log, message) => {
+  let parsed = {};
+  try {
+    parsed = JSON.parse(message);
+  } catch (err) {
+    log.warn({ message }, "Received a non-valid JSON message");
+    return {};
+  }
   const result = {};
   parsed.predictions.forEach(p => {
-    const routeId = p.joreLineId;
+    const match = p.joreLineId.match(routeIdRegExp);
+    if (match === null) {
+      log.warn({ parsed }, "joreLineId has an unexpected form");
+      // "continue" for forEach
+      return;
+    }
+    const [routeId] = match;
     const directionStr = p.joreLineDirection;
     const journeyStartStr = p.journeyStartTime;
     const pseudoTripId = `${routeId}_${directionStr}_${journeyStartStr}`;

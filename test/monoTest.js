@@ -1,9 +1,12 @@
 const { expect } = require("chai");
+const bunyan = require("bunyan");
+const devnull = require("dev-null");
 const moment = require("moment");
 
 const mono = require("../src/mono");
 
 describe("transformMonoMessage", () => {
+  const log = bunyan.createLogger({ name: "testing", stream: devnull() });
   const monoMessage =
     '{"predictions": [{"stopOrderInJourney": 46, "joreLineId": "4562", "scheduledDepartureTime": "2017-10-30T14:49:00+02:00", "joreStopId": "4520260", "predictedDepartureTime": "2017-10-30T14:48:38.897+02:00", "journeyStartTime": "2017-10-30T14:02:00+02:00", "joreLineDirection": "1"}, {"stopOrderInJourney": 46, "joreLineId": "4562", "scheduledDepartureTime": "2017-10-30T14:59:00+02:00", "joreStopId": "4520260", "predictedDepartureTime": "2017-10-30T14:56:38.327+02:00", "journeyStartTime": "2017-10-30T14:12:00+02:00", "joreLineDirection": "1"}], "messageTimestamp": "2017-10-30T12:47:34.406+00:00"}';
   const tripId1 = "4562_1_2017-10-30T14:02:00+02:00";
@@ -63,18 +66,19 @@ describe("transformMonoMessage", () => {
     }
   };
 
-  it("should throw on input that is not JSON", () => {
-    expect(() => mono.transformMonoMessage("foo")).to.throw(SyntaxError);
+  it("should return {} on non-valid JSON", () => {
+    // FIXME: Test that the log is written to.
+    expect(mono.transformMonoMessage(log, "foo")).to.deep.equal({});
   });
 
   it("should return the expected result for a realistic Mono message", () => {
-    expect(mono.transformMonoMessage(monoMessage)).to.deep.equal(result);
+    expect(mono.transformMonoMessage(log, monoMessage)).to.deep.equal(result);
   });
 
   it("should return consistent delay and time", () => {
     const shortFormat = "YYYY-MM-DDTHH:mm:ssZ";
     const useStrictParsing = true;
-    const messages = mono.transformMonoMessage(monoMessage);
+    const messages = mono.transformMonoMessage(log, monoMessage);
     const doTest = (tripId, scheduledString) => {
       const update = messages[tripId].tripUpdate.stopTimeUpdate[0];
       const scheduled = moment

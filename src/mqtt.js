@@ -23,7 +23,7 @@ const createSubscriptionCallback = (topic, log) => {
 const startMQTTSubscription = (config, log, cache) => {
   const client = mqtt.connect(config.url, config.options);
   client.on("message", (topic, message) =>
-    updateCache(cache, transformMonoMessage(message))
+    updateCache(cache, transformMonoMessage(log, message))
   );
   client.on("error", err => {
     log.fatal(
