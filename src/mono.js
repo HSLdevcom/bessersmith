@@ -37,9 +37,12 @@ const transformMonoMessage = message => {
     let startDate = journeyStart.format("YYYYMMDD");
     let startTime = journeyStart.format("HH:mm:ss");
     if (journeyStart.hours() < 4) {
-        const scheduleDay = journeyStart.clone().subtract(1, "days").startOf("day");
-        startDate = scheduleDay.format("YYYYMMDD");
-        startTime = journeyStart.hours() + 24 + journeyStart.format(":mm:ss");
+      const scheduleDay = journeyStart
+        .clone()
+        .subtract(1, "days")
+        .startOf("day");
+      startDate = scheduleDay.format("YYYYMMDD");
+      startTime = journeyStart.hours() + 24 + journeyStart.format(":mm:ss");
     }
 
     // FIXME: The same Mono message cannot contain several predictions for the

@@ -30,7 +30,11 @@ const buildFeed = cache => {
     .map(tripId => cache.get(tripId))
     .filter()
     .map(_.cloneDeep)
-    .forEach(entity => _(entity.tripUpdate.stopTimeUpdate).forEach(stopTimeUpdate => _.unset(stopTimeUpdate, 'stopSequence')))
+    .forEach(entity =>
+      _(entity.tripUpdate.stopTimeUpdate).forEach(stopTimeUpdate =>
+        _.unset(stopTimeUpdate, "stopSequence")
+      )
+    )
     .value();
   return {
     header: {
