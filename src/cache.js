@@ -18,7 +18,7 @@ const mergeFeedEntities = (cachedEntity, newEntityFragment) => {
     .sortBy("stopSequence")
     .value();
   // Use new timestamp.
-  const newTrip = newEntityFragment;
+  const newTrip = _.cloneDeep(newEntityFragment);
   newTrip.tripUpdate.stopTimeUpdate = mergedUpdates;
   return newTrip;
 };
