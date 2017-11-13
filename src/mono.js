@@ -4,13 +4,8 @@ const longFormat = "YYYY-MM-DDTHH:mm:ss.SSSZ";
 const shortFormat = "YYYY-MM-DDTHH:mm:ssZ";
 const useStrictParsing = true;
 
-const parseTime = str => {
-  let m = moment.parseZone(str, longFormat, useStrictParsing);
-  if (!m.isValid()) {
-    m = moment.parseZone(str, shortFormat, useStrictParsing);
-  }
-  return m;
-};
+const parseTime = str =>
+  moment.parseZone(str, [longFormat, shortFormat], useStrictParsing);
 
 const transformMonoMessage = message => {
   const parsed = JSON.parse(message);
