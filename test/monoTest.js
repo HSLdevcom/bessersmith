@@ -63,7 +63,7 @@ describe("transformMonoMessage", () => {
     }
   };
 
-  it("should throw on input that is not a stringified JSON object", () => {
+  it("should throw on input that is not JSON", () => {
     expect(() => mono.transformMonoMessage("foo")).to.throw(SyntaxError);
   });
 
