@@ -1,3 +1,4 @@
+const _ = require("lodash");
 const moment = require("moment");
 
 const longFormat = "YYYY-MM-DDTHH:mm:ss.SSSZ";
@@ -64,9 +65,7 @@ const transformMonoMessage = (log, message) => {
     const startDate = formStartDate(p.operatingDay);
     const startTime = formStartTime(p.journeyStartInSecondsIntoOperatingDay);
 
-    // FIXME: The same Mono message cannot contain several predictions for the
-    //        same journey. Log a warning if that happens.
-    result[pseudoTripId] = {
+    const entity = {
       id: pseudoTripId,
       tripUpdate: {
         trip: {
@@ -92,6 +91,20 @@ const transformMonoMessage = (log, message) => {
         timestamp
       }
     };
+
+    /**
+     * The same stop might be visited several times within the same journey.
+     * Several of those visits may get a prediction in the same message. That is
+     * quite abnormal, though.
+     */
+    if (_.has(result, pseudoTripId)) {
+      const prevEntity = result[pseudoTripId];
+      prevEntity.tripUpdate.stopTimeUpdate = entity.tripUpdate.stopTimeUpdate.concat(
+        prevEntity.tripUpdate.stopTimeUpdate
+      );
+    } else {
+      result[pseudoTripId] = entity;
+    }
   });
   return result;
 };
