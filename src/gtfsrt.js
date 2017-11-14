@@ -29,6 +29,8 @@ const buildFeed = cache => {
   const tripUpdates = _.chain(sortedTripIds)
     .map(tripId => cache.get(tripId))
     .filter()
+    .filter("isValid")
+    .map("feedEntity")
     .map(_.cloneDeep)
     .forEach(entity =>
       _(entity.tripUpdate.stopTimeUpdate).forEach(stopTimeUpdate =>
