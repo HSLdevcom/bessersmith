@@ -11,12 +11,7 @@ const parseTime = str =>
 const formStartDate = str => str.split("-").join("");
 
 const formStartTime = allSeconds => {
-  const convert = x => {
-    if (x < 10) {
-      return `0${x.toString()}`;
-    }
-    return x.toString();
-  };
+  const convert = x => _.padStart(x, 2, "0");
 
   const hours = Math.floor(allSeconds / 3600);
   const minutes = Math.floor(allSeconds / 60) - 60 * hours;
