@@ -42,7 +42,7 @@ const mergeFeedEntities = (cached, newEntityFragment) => {
 };
 
 const updateCache = (cache, input) => {
-  _.forEach(input, (newEntityFragment, tripId) =>
+  _.forOwn(input, (newEntityFragment, tripId) =>
     cache.put(tripId, mergeFeedEntities(cache.get(tripId), newEntityFragment))
   );
   return cache;
