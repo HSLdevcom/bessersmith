@@ -52,10 +52,8 @@ const transformMonoMessage = (log, message) => {
 
     const scheduled = parseTime(p.scheduledDepartureTime);
     const predicted = parseTime(p.predictedDepartureTime);
-    const delay = Math.round(predicted.diff(scheduled, "seconds", true));
-    const time = moment(scheduled)
-      .add(delay, "seconds")
-      .unix();
+    const time = Math.round(predicted.valueOf() / 1000);
+    const delay = time - Math.round(scheduled.valueOf() / 1000);
 
     const startDate = formStartDate(p.operatingDay);
     const startTime = formStartTime(p.journeyStartInSecondsIntoOperatingDay);
