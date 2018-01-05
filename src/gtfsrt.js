@@ -1,6 +1,20 @@
-const _ = require("lodash");
 const moment = require("moment");
 const protobuf = require("protobufjs");
+
+const createFeedBuilder = feedMessage => {
+  const buildFeed = feedEntities => {
+    const feedFormat = {
+      header: {
+        gtfsRealtimeVersion: "2.0",
+        incrementality: 1,
+        timestamp: moment().unix()
+      },
+      entity: feedEntities
+    };
+    return feedMessage.encode(feedMessage.create(feedFormat)).finish();
+  };
+  return buildFeed;
+};
 
 const getFeedMessage = async (filename, log) => {
   let root;
@@ -10,42 +24,15 @@ const getFeedMessage = async (filename, log) => {
     log.fatal({ err }, "Loading the protobuf file failed");
     throw err;
   }
-  let msg;
+  let feedMessage;
   try {
-    msg = root.lookupType("transit_realtime.FeedMessage");
+    feedMessage = root.lookupType("transit_realtime.FeedMessage");
   } catch (err) {
     log.fatal({ err }, "Looking up FeedMessage from the protobuf file failed");
     throw err;
   }
-  return msg;
+  return feedMessage;
 };
 
-const buildFeed = cache => {
-  const sortedTripIds = cache.keys().sort();
-  /**
-   * As we do not have a snapshot of the cache, some values might expire while
-   * we traverse the cache. Filter the nulls out.
-   */
-  const tripUpdates = _.chain(sortedTripIds)
-    .map(tripId => cache.get(tripId))
-    .filter()
-    .filter("isValid")
-    .map("feedEntity")
-    .map(_.cloneDeep)
-    .forEach(entity =>
-      _(entity.tripUpdate.stopTimeUpdate).forEach(stopTimeUpdate =>
-        _.unset(stopTimeUpdate, "stopSequence")
-      )
-    )
-    .value();
-  return {
-    header: {
-      gtfsRealtimeVersion: "1.0",
-      timestamp: moment().unix()
-    },
-    entity: tripUpdates
-  };
-};
-
-exports.buildFeed = buildFeed;
+exports.createFeedBuilder = createFeedBuilder;
 exports.getFeedMessage = getFeedMessage;

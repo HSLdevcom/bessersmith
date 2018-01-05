@@ -1,13 +1,9 @@
 const assert = require("assert");
 const fs = require("fs");
-const bunyan = require("bunyan");
 const neodoc = require("neodoc");
 const yaml = require("js-yaml");
 
-const { createCache } = require("./src/cache");
-const { getFeedMessage } = require("./src/gtfsrt");
-const { createServer } = require("./src/http");
-const { startMQTTSubscription } = require("./src/mqtt");
+const { run } = require("./src/run");
 
 const help = `
 bessersmith
@@ -21,22 +17,6 @@ Options:
   -h --help                 Show this screen.
   --version                 Show version.
 `;
-
-const run = async config => {
-  const log = bunyan.createLogger(config.bunyan);
-  const cache = createCache(config.cache);
-  let feedMessage;
-  try {
-    feedMessage = await getFeedMessage(config.protoFilename, log);
-  } catch (err) {
-    process.exit(1);
-  }
-  const server = createServer(log, cache, feedMessage);
-  startMQTTSubscription(config.mqtt, log, cache);
-  server.listen(config.http.listeningOptions, () => {
-    log.info("The HTTP server has been bound");
-  });
-};
 
 const main = () => {
   const args = neodoc.run(help, { requireFlags: true });
