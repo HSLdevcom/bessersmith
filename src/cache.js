@@ -12,8 +12,6 @@ const createCache = config => {
   return cache;
 };
 
-const pairwise = arr => _.zip(_.dropRight(arr), _.tail(arr));
-
 const mergeFeedEntities = (cached, newEntityFragment) => {
   let mergedUpdates = [];
   if (cached === null) {
@@ -22,23 +20,14 @@ const mergeFeedEntities = (cached, newEntityFragment) => {
       "stopSequence"
     );
   } else {
-    // FIXME: Consider _.merge
     mergedUpdates = _(newEntityFragment.tripUpdate.stopTimeUpdate)
-      .unionBy(cached.feedEntity.tripUpdate.stopTimeUpdate, "stopSequence")
+      .unionBy(cached.tripUpdate.stopTimeUpdate, "stopSequence")
       .sortBy("stopSequence")
       .value();
   }
-  let isValid = true;
-  _.forEach(pairwise(mergedUpdates), ([currStop, nextStop]) => {
-    if (currStop.departure.time >= nextStop.arrival.time) {
-      isValid = false;
-      return false;
-    }
-    return true;
-  });
   const newEntity = _.cloneDeep(newEntityFragment);
   newEntity.tripUpdate.stopTimeUpdate = mergedUpdates;
-  return { isValid, feedEntity: newEntity };
+  return newEntity;
 };
 
 const updateCache = (cache, input) => {

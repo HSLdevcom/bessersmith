@@ -111,25 +111,19 @@ describe("cache", () => {
     };
     output = {
       [tripId1]: {
-        isValid: true,
-        feedEntity: {
-          id: tripId1,
-          tripUpdate: {
-            trip: {
-              routeId: "4562",
-              directionId: 0,
-              startTime: "14:02:00",
-              startDate: "20171030"
-            },
-            stopTimeUpdate: [input1TripId1Stop45, input2TripId1Stop46],
-            timestamp: 1509367659
-          }
+        id: tripId1,
+        tripUpdate: {
+          trip: {
+            routeId: "4562",
+            directionId: 0,
+            startTime: "14:02:00",
+            startDate: "20171030"
+          },
+          stopTimeUpdate: [input1TripId1Stop45, input2TripId1Stop46],
+          timestamp: 1509367659
         }
       },
-      [tripId2]: {
-        isValid: true,
-        feedEntity: input1[tripId2]
-      }
+      [tripId2]: input1[tripId2]
     };
   });
 
@@ -173,12 +167,12 @@ describe("cache", () => {
     it("should update timestamp", () => {
       const cache = createCache(cacheOptions);
       updateCache(cache, input1);
-      expect(cache.get(tripId1).feedEntity.tripUpdate.timestamp).to.equal(
+      expect(cache.get(tripId1).tripUpdate.timestamp).to.equal(
         input1[tripId1].tripUpdate.timestamp
       );
       updateCache(cache, input2);
-      expect(cache.get(tripId1).feedEntity.tripUpdate.timestamp).to.equal(
-        output[tripId1].feedEntity.tripUpdate.timestamp
+      expect(cache.get(tripId1).tripUpdate.timestamp).to.equal(
+        output[tripId1].tripUpdate.timestamp
       );
     });
   });
@@ -222,16 +216,16 @@ describe("cache", () => {
 
   describe("mergeFeedEntities", () => {
     it("should use the timestamp of the latest update", () => {
-      const cached = { isValid: true, feedEntity: input1[tripId1] };
+      const cached = input1[tripId1];
       const newEntityFragment = input2[tripId1];
       const merged = mergeFeedEntities(cached, newEntityFragment);
-      expect(merged.feedEntity.tripUpdate.timestamp).to.equal(
+      expect(merged.tripUpdate.timestamp).to.equal(
         newEntityFragment.tripUpdate.timestamp
       );
     });
 
     it("should not modify any inputs", () => {
-      const cached = { isValid: true, feedEntity: input1[tripId1] };
+      const cached = input1[tripId1];
       const newEntityFragment = input2[tripId1];
       const cachedClone = _.cloneDeep(cached);
       const newClone = _.cloneDeep(newEntityFragment);
@@ -241,26 +235,10 @@ describe("cache", () => {
     });
 
     it("should update what can be updated and retain the rest", () => {
-      const cached = { isValid: true, feedEntity: input1[tripId1] };
+      const cached = input1[tripId1];
       const newEntityFragment = input2[tripId1];
       const merged = mergeFeedEntities(cached, newEntityFragment);
       expect(merged).to.deep.equal(output[tripId1]);
-    });
-
-    it("should have isValid: true for consistent input", () => {
-      const cached = { isValid: true, feedEntity: input1[tripId1] };
-      const newEntityFragment = input2[tripId1];
-      const merged = mergeFeedEntities(cached, newEntityFragment);
-      expect(merged.isValid).to.equal(true);
-    });
-
-    it("should have isValid: false for inconsistent input", () => {
-      const cached = { isValid: true, feedEntity: input1[tripId1] };
-      const newEntityFragment = _.cloneDeep(input2[tripId1]);
-      newEntityFragment.tripUpdate.stopTimeUpdate[0].arrival.delay = -80;
-      newEntityFragment.tripUpdate.stopTimeUpdate[0].arrival.time = 1509367660;
-      const merged = mergeFeedEntities(cached, newEntityFragment);
-      expect(merged.isValid).to.equal(false);
     });
   });
 });
