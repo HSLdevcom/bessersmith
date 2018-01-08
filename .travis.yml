@@ -1,7 +1,34 @@
-language: node_js
-node_js:
-  - "node"
-  - "8"
+sudo: required
+
+services:
+  - docker
+
+env:
+  global:
+    # Docker Hub cannot handle uppercase characters in repository names. Fix it
+    # with a bashism as Travis CI cannot handle quoting within command
+    # substitution.
+    - LOWERCASE_REPO_SLUG="${TRAVIS_REPO_SLUG,,}"
+    - DOCKER_LOCAL="${LOWERCASE_REPO_SLUG}:${TRAVIS_COMMIT}"
+    - DOCKER_MASTER="${LOWERCASE_REPO_SLUG}:latest"
+    - DOCKER_GIT_TAG="${LOWERCASE_REPO_SLUG}:${TRAVIS_TAG}"
+
+before_install:
+  - docker --version
+  - echo "ENV GIT_COMMIT ${TRAVIS_COMMIT}" >> Dockerfile
+  - docker build --tag "${DOCKER_LOCAL}" .
+
 script:
-  - yarn eslint
-  - yarn test
+  - docker run --rm "${DOCKER_LOCAL}" yarn eslint
+  - docker run --rm "${DOCKER_LOCAL}" yarn test
+
+deploy:
+  - provider: script
+    script: sh ./.travis/docker_login_tag_push "${DOCKER_LOCAL}" "${DOCKER_MASTER}"
+    on:
+      branch: master
+  - provider: script
+    script: sh ./.travis/docker_login_tag_push "${DOCKER_LOCAL}" "${DOCKER_GIT_TAG}"
+    on:
+      tags: true
+      all_branches: true

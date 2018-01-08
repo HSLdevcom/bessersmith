@@ -1,8 +1,8 @@
 FROM node:9-alpine
 
-COPY build .
-COPY config.yaml .
+WORKDIR /app
+COPY . ./
 
 RUN yarn
 
-CMD ["yarn", "start", "-c", "config.yaml"]
+CMD ["yarn", "start", "-c", "/run/secrets/config.yaml"]
