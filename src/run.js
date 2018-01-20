@@ -23,6 +23,7 @@ const createMessageHandler = (log, cache, buildFeed, publish) => {
 
 const run = async config => {
   const log = bunyan.createLogger(config.bunyan);
+  log.info({ gitCommit: process.env.GIT_COMMIT }, "log opened");
   let feedMessage;
   try {
     feedMessage = await getFeedMessage(config.protoFilename, log);
