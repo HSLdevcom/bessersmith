@@ -23,7 +23,7 @@
     "memory-cache": "^0.2.0",
     "moment": "^2.19.0",
     "mqtt": "^2.13.0",
-    "neodoc": "^1.4.0",
+    "neodoc": "^2.0.0",
     "protobufjs": "^6.8.0"
   },
   "devDependencies": {
