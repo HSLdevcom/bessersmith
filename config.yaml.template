@@ -8,6 +8,8 @@ mqtt:
       port: 8883
       clientId: "bessersmith-sub-MY_RANDOM_SUFFIX_1"
       clean: true
+      username: MY_MQTT_USERNAME
+      password: MY_MQTT_PASSWORD
     subscriptionOptions:
       qos: 1
     topic: "SUBSCRIBE/TO/MONO/PREDICTIONS/#"
@@ -17,6 +19,8 @@ mqtt:
       port: 8883
       clientId: "bessersmith-pub-MY_RANDOM_SUFFIX_2"
       clean: true
+      username: MY_MQTT_USERNAME
+      password: MY_MQTT_PASSWORD
     publishingOptions:
       qos: 1
     topic: "PUBLISH/GTFS/REALTIME/TRIPUPDATES"
