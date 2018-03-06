@@ -3,16 +3,18 @@ bunyan:
   level: "info"
 mqtt:
   subscribe:
-    url: "mqtt://MY_MQTT_BROKER.com"
+    url: "mqtts://MY_MQTT_BROKER.com"
     connectionOptions:
+      port: 8883
       clientId: "bessersmith-sub-MY_RANDOM_SUFFIX_1"
       clean: true
     subscriptionOptions:
       qos: 1
     topic: "SUBSCRIBE/TO/MONO/PREDICTIONS/#"
   publish:
-    url: "mqtt://MY_MQTT_BROKER.com"
+    url: "mqtts://MY_MQTT_BROKER.com"
     connectionOptions:
+      port: 8883
       clientId: "bessersmith-pub-MY_RANDOM_SUFFIX_2"
       clean: true
     publishingOptions:
