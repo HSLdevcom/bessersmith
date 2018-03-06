@@ -7,7 +7,7 @@ mqtt:
     connectionOptions:
       port: 8883
       clientId: "bessersmith-sub-MY_RANDOM_SUFFIX_1"
-      clean: true
+      clean: false
       username: MY_MQTT_USERNAME
       password: MY_MQTT_PASSWORD
     subscriptionOptions:
