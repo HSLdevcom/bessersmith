@@ -19,10 +19,10 @@ Options:
 `;
 
 const main = () => {
-  const args = neodoc.run(help, { requireFlags: true });
-  const configFilename = args["--config"];
+  const args = neodoc.run(help);
+  const configFilename = args["--config"] || process.env.CONFIG_YAML;
   if (typeof configFilename === "undefined") {
-    assert.fail("neodoc parsing has failed");
+    assert.fail("Configuration file path was not given");
   }
   const config = yaml.safeLoad(fs.readFileSync(configFilename, "utf8"));
   Promise.resolve(run(config));
