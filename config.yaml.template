@@ -3,24 +3,24 @@ bunyan:
   level: "info"
 mqtt:
   subscribe:
-    url: "mqtts://MY_MQTT_BROKER.com"
+    url: "mqtts://MY_MQTT_BROKER_1.com"
     connectionOptions:
       port: 8883
       clientId: "bessersmith-sub-MY_RANDOM_SUFFIX_1"
       clean: false
-      username: MY_MQTT_USERNAME
-      password: MY_MQTT_PASSWORD
+      username: MY_MQTT_USERNAME_1
+      password: MY_MQTT_PASSWORD_1
     subscriptionOptions:
       qos: 1
     topic: "SUBSCRIBE/TO/MONO/PREDICTIONS/#"
   publish:
-    url: "mqtts://MY_MQTT_BROKER.com"
+    url: "mqtts://MY_MQTT_BROKER_2.com"
     connectionOptions:
       port: 8883
       clientId: "bessersmith-pub-MY_RANDOM_SUFFIX_2"
       clean: true
-      username: MY_MQTT_USERNAME
-      password: MY_MQTT_PASSWORD
+      username: MY_MQTT_USERNAME_2
+      password: MY_MQTT_PASSWORD_2
     publishingOptions:
       qos: 1
     topic: "PUBLISH/GTFS/REALTIME/TRIPUPDATES"
