@@ -5,4 +5,4 @@ COPY . ./
 
 RUN yarn
 
-CMD ["yarn", "start", "-c", "/run/secrets/config.yaml"]
+CMD ["yarn", "start"]
