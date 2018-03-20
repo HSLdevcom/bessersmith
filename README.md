@@ -8,7 +8,7 @@ To install:
 ```sh
 git clone https://github.com/hsldevcom/bessersmith
 cd bessersmith
-yarn
+yarn install
 ```
 
 To test:
