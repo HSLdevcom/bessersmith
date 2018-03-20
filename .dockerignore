@@ -5,5 +5,5 @@
 .travis
 .travis.yml
 Dockerfile
-config.yaml.template
+config.yaml
 node_modules
