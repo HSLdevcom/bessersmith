@@ -31,7 +31,7 @@ const run = async config => {
     process.exit(1);
   }
   const buildFeed = createFeedBuilder(feedMessage);
-  const cache = createCache(config.cache);
+  const cache = createCache(config.cacheTTLInSeconds);
   const publish = startPublishing(config.mqtt.publish, log);
   const handleMessage = createMessageHandler(log, cache, buildFeed, publish);
   startSubscription(config.mqtt.subscribe, log, cache, handleMessage);

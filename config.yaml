@@ -24,6 +24,5 @@ mqtt:
     publishingOptions:
       qos: 1
     topic: "PUBLISH/GTFS/REALTIME/TRIPUPDATES"
-cache:
-  ttlInSeconds: 7200
+cacheTTLInSeconds: 7200
 protoFilename: "gtfs-realtime.proto"

@@ -1,8 +1,7 @@
 const _ = require("lodash");
 const { Cache } = require("memory-cache");
 
-const createCache = config => {
-  const { ttlInSeconds } = config;
+const createCache = ttlInSeconds => {
   let ttlInMilliseconds;
   if (typeof ttlInSeconds !== "undefined") {
     ttlInMilliseconds = ttlInSeconds * 1000;

@@ -128,31 +128,29 @@ describe("cache", () => {
   });
 
   describe("updateCache", () => {
-    const cacheOptions = {
-      ttlInSeconds: undefined
-    };
+    const cacheTTLInSeconds = undefined;
 
     it("should not throw on empty cache", () => {
-      const cache = createCache(cacheOptions);
+      const cache = createCache(cacheTTLInSeconds);
       expect(() => updateCache(cache, input1)).to.not.throw();
       expect(cache.size()).to.equal(2);
     });
 
     it("should not throw on empty input", () => {
-      const cache = createCache(cacheOptions);
+      const cache = createCache(cacheTTLInSeconds);
       updateCache(cache, input1);
       expect(() => updateCache(cache, {})).to.not.throw();
       expect(cache.size()).to.equal(2);
     });
 
     it("should not throw on empty cache and empty input", () => {
-      const cache = createCache(cacheOptions);
+      const cache = createCache(cacheTTLInSeconds);
       expect(() => updateCache(cache, {})).to.not.throw();
       expect(cache.size()).to.equal(0);
     });
 
     it("should replace old information with new input", () => {
-      const cache = createCache(cacheOptions);
+      const cache = createCache(cacheTTLInSeconds);
       updateCache(cache, input1);
       updateCache(cache, input2);
       expect(cache.size()).to.equal(2);
@@ -165,7 +163,7 @@ describe("cache", () => {
     });
 
     it("should update timestamp", () => {
-      const cache = createCache(cacheOptions);
+      const cache = createCache(cacheTTLInSeconds);
       updateCache(cache, input1);
       expect(cache.get(tripId1).tripUpdate.timestamp).to.equal(
         input1[tripId1].tripUpdate.timestamp
@@ -184,12 +182,10 @@ describe("cache", () => {
     });
     after(() => clock.uninstall());
 
-    const cacheOptions = {
-      ttlInSeconds: 0.1
-    };
+    const cacheTTLInSeconds = 0.1;
 
     it("should forget the contents after the specified time", () => {
-      const cache = createCache(cacheOptions);
+      const cache = createCache(cacheTTLInSeconds);
       updateCache(cache, input1);
       expect(cache.size()).to.equal(2);
       clock.tick(99);
@@ -199,7 +195,7 @@ describe("cache", () => {
     });
 
     it("should reset the expiration timer for the refreshed entries", () => {
-      const cache = createCache(cacheOptions);
+      const cache = createCache(cacheTTLInSeconds);
       updateCache(cache, input1);
       clock.tick(99);
       expect(cache.size()).to.equal(2);
