@@ -33,4 +33,4 @@ mqtt:
     topic: "PUBLISH/GTFS/REALTIME/TRIPUPDATES"
 cacheTTLInSeconds: 7200
 # Required
-protoFilename: "gtfs-realtime.proto"
+protoPath: "./gtfs-realtime.proto"

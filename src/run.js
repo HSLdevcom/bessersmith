@@ -26,7 +26,7 @@ const run = async config => {
   log.info({ gitCommit: process.env.GIT_COMMIT }, "log opened");
   let feedMessage;
   try {
-    feedMessage = await getFeedMessage(config.protoFilename, log);
+    feedMessage = await getFeedMessage(config.protoPath, log);
   } catch (err) {
     process.exit(1);
   }

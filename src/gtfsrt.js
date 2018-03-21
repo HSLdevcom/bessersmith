@@ -16,10 +16,10 @@ const createFeedBuilder = feedMessage => {
   return buildFeed;
 };
 
-const getFeedMessage = async (filename, log) => {
+const getFeedMessage = async (protoPath, log) => {
   let root;
   try {
-    root = await protobuf.load(filename);
+    root = await protobuf.load(protoPath);
   } catch (err) {
     log.fatal({ err }, "Loading the protobuf file failed");
     throw err;
