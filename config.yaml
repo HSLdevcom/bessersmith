@@ -1,7 +1,11 @@
+# Required
 bunyan:
+  # Required
   name: "bessersmith"
   level: "info"
+# Required
 mqtt:
+  # Required
   subscribe:
     url: "mqtts://MY_MQTT_BROKER_1.com"
     connectionOptions:
@@ -12,7 +16,9 @@ mqtt:
       password: MY_MQTT_PASSWORD_1
     subscriptionOptions:
       qos: 1
+    # Required
     topic: "SUBSCRIBE/TO/MONO/PREDICTIONS/#"
+  # Required
   publish:
     url: "mqtts://MY_MQTT_BROKER_2.com"
     connectionOptions:
@@ -23,6 +29,8 @@ mqtt:
       password: MY_MQTT_PASSWORD_2
     publishingOptions:
       qos: 1
+    # Required
     topic: "PUBLISH/GTFS/REALTIME/TRIPUPDATES"
 cacheTTLInSeconds: 7200
+# Required
 protoFilename: "gtfs-realtime.proto"
