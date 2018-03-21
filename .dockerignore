@@ -1,0 +1,9 @@
+.dockerignore
+.editorconfig
+.git
+.gitignore
+.travis
+.travis.yml
+Dockerfile
+config.yaml.template
+node_modules
