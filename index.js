@@ -20,6 +20,9 @@ Options:
   --version                 Show version.
 `;
 
+const toNumberOrUndefined = arg =>
+  typeof arg === "undefined" ? undefined : _.toNumber(arg);
+
 const constructConfigFromEnvironment = () => {
   const filled = {
     bunyan: {
@@ -30,36 +33,34 @@ const constructConfigFromEnvironment = () => {
       subscribe: {
         url: process.env.MQTT_SUB_URL,
         connectionOptions: {
-          port: process.env.MQTT_SUB_PORT,
+          port: toNumberOrUndefined(process.env.MQTT_SUB_PORT),
           clientId: process.env.MQTT_SUB_CLIENT_ID,
           clean: process.env.MQTT_SUB_CLEAN,
           username: process.env.MQTT_SUB_USERNAME,
           password: process.env.MQTT_SUB_PASSWORD
         },
         subscriptionOptions: {
-          qos: process.env.MQTT_SUB_QOS
+          qos: toNumberOrUndefined(process.env.MQTT_SUB_QOS)
         },
         topic: process.env.MQTT_SUB_TOPIC
       },
       publish: {
         url: process.env.MQTT_PUB_URL,
         connectionOptions: {
-          port: process.env.MQTT_PUB_PORT,
+          port: toNumberOrUndefined(process.env.MQTT_PUB_PORT),
           clientId: process.env.MQTT_PUB_CLIENT_ID,
           clean: process.env.MQTT_PUB_CLEAN,
           username: process.env.MQTT_PUB_USERNAME,
           password: process.env.MQTT_PUB_PASSWORD
         },
         publishingOptions: {
-          qos: process.env.MQTT_PUB_QOS
+          qos: toNumberOrUndefined(process.env.MQTT_PUB_QOS)
         },
         topic: process.env.MQTT_PUB_TOPIC
-      },
-      cache: {
-        ttlInSeconds: process.env.CACHE_TTL_IN_SECONDS
-      },
-      protoPath: process.env.PROTO_PATH
-    }
+      }
+    },
+    cacheTTLInSeconds: toNumberOrUndefined(process.env.CACHE_TTL_IN_SECONDS),
+    protoPath: process.env.PROTO_PATH
   };
   return _.omitBy(filled, _.isUndefined);
 };
