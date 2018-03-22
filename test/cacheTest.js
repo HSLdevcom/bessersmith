@@ -236,5 +236,26 @@ describe("cache", () => {
       const merged = mergeFeedEntities(cached, newEntityFragment);
       expect(merged).to.deep.equal(output[tripId1]);
     });
+
+    it("should order StopTimeUpdates by stop_sequence", () => {
+      const cached = input2[tripId1];
+      const newEntityFragment = _.cloneDeep(input1[tripId1]);
+      newEntityFragment.tripUpdate.stopTimeUpdate.pop();
+      newEntityFragment.tripUpdate.timestamp -= 10;
+      const merged = mergeFeedEntities(cached, newEntityFragment);
+      expect(merged.tripUpdate.stopTimeUpdate[0].stopSequence).to.equal(
+        input1TripId1Stop45.stopSequence
+      );
+      expect(merged.tripUpdate.stopTimeUpdate[1].stopSequence).to.equal(
+        input2TripId1Stop46.stopSequence
+      );
+      const mergedAgain = mergeFeedEntities(merged, input1[tripId1]);
+      expect(mergedAgain.tripUpdate.stopTimeUpdate[0].stopSequence).to.equal(
+        input1TripId1Stop45.stopSequence
+      );
+      expect(mergedAgain.tripUpdate.stopTimeUpdate[1].stopSequence).to.equal(
+        input1TripId1Stop46.stopSequence
+      );
+    });
   });
 });
