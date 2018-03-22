@@ -73,8 +73,8 @@ describe("cache", () => {
           trip: {
             routeId: "4562",
             directionId: 0,
-            startDate: "20171030",
-            startTime: "14:12:00"
+            startTime: "14:12:00",
+            startDate: "20171030"
           },
           stopTimeUpdate: [
             {

@@ -1,5 +1,5 @@
-const _ = require("lodash");
 const bunyan = require("bunyan");
+const _ = require("lodash");
 
 const { createCache, updateCache } = require("./cache");
 const { createFeedBuilder, getFeedMessage } = require("./gtfsrt");
