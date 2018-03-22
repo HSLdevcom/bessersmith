@@ -13,6 +13,13 @@ const createMessageHandler = (log, cache, buildFeed, publish) => {
     _.chain(feedEntityFragments)
       .keys()
       .map(tripId => cache.get(tripId))
+      /**
+       * With a large enough cacheTTLInSeconds, the cache should not expire the
+       * trips that were just updated with updateCache(). Unfortunately
+       * cache.get() has a side effect of removing expired entries, so filter
+       * out nulls just in case.
+       */
+      .filter()
       // Publish each trip separately.
       .map(feedEntity => buildFeed([feedEntity]))
       .forEach(feed => publish(feed))
