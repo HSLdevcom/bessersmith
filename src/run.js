@@ -6,6 +6,15 @@ const { createFeedBuilder, getFeedMessage } = require("./gtfsrt");
 const { transformMonoMessage } = require("./mono");
 const { startPublishing, startSubscription } = require("./mqtt");
 
+const removeStopSequence = feedEntity => {
+  const censored = _.cloneDeep(feedEntity);
+  censored.tripUpdate.stopTimeUpdate = _.map(
+    censored.tripUpdate.stopTimeUpdate,
+    stopTimeUpdate => _.omit(stopTimeUpdate, "stopSequence")
+  );
+  return censored;
+};
+
 const createMessageHandler = (log, cache, buildFeed, publish) => {
   const handleMessage = (topic, input) => {
     const feedEntityFragments = transformMonoMessage(log, input);
@@ -20,6 +29,13 @@ const createMessageHandler = (log, cache, buildFeed, publish) => {
        * out nulls just in case.
        */
       .filter()
+      /**
+       * As via points in PubTrans have their own stopSequence, stopSequence
+       * does not match the published GTFS. stopSequence should be removed only
+       * after updateCache where it is used for retaining order in
+       * stopTimeUpdate.
+       */
+      .map(feedEntity => removeStopSequence(feedEntity))
       // Publish each trip separately.
       .map(feedEntity => buildFeed([feedEntity]))
       .forEach(feed => publish(feed))
