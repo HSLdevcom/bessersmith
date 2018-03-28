@@ -1,5 +1,10 @@
 sudo: required
 
+# Used for semver and parsing package.json
+language: node_js
+node_js:
+  - "node"
+
 services:
   - docker
 
@@ -11,7 +16,6 @@ env:
     - LOWERCASE_REPO_SLUG="${TRAVIS_REPO_SLUG,,}"
     - DOCKER_LOCAL="${LOWERCASE_REPO_SLUG}:${TRAVIS_COMMIT}"
     - DOCKER_MASTER="${LOWERCASE_REPO_SLUG}:latest"
-    - DOCKER_GIT_TAG="${LOWERCASE_REPO_SLUG}:${TRAVIS_TAG}"
 
 before_install:
   - docker --version
@@ -19,6 +23,7 @@ before_install:
   - docker build --tag "${DOCKER_LOCAL}" .
 
 script:
+  - sh ./.travis/check_semver
   - docker run --rm "${DOCKER_LOCAL}" yarn eslint
   - docker run --rm "${DOCKER_LOCAL}" yarn test
 
@@ -28,7 +33,7 @@ deploy:
     on:
       branch: master
   - provider: script
-    script: sh ./.travis/docker_login_tag_push "${DOCKER_LOCAL}" "${DOCKER_GIT_TAG}"
+    script: sh ./.travis/docker_login_tag_semver_push "${DOCKER_LOCAL}" "${LOWERCASE_REPO_SLUG}" "${TRAVIS_TAG}"
     on:
       tags: true
       all_branches: true

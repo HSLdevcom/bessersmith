@@ -1,0 +1,21 @@
+#!/bin/sh
+
+set -u
+
+if [ -n "${TRAVIS_TAG}" ]; then
+  TRAVIS_SEMVER="$(semver "${TRAVIS_TAG}")"
+  if [ "$?" -ne 0 ]; then
+    echo "TRAVIS_TAG ${TRAVIS_TAG} does not follow semver" 1>&2
+    exit 1
+  fi
+  PACKAGE_VERSION="$(node -p "require('./package.json').version")"
+  PACKAGE_SEMVER="$(semver "${PACKAGE_VERSION}")"
+  if [ "$?" -ne 0 ]; then
+    echo "version ${PACKAGE_VERSION} in package.json does not follow semver" 1>&2
+    exit 1
+  fi
+  if [ "${TRAVIS_SEMVER}" != "${PACKAGE_VERSION}" ]; then
+    echo "According to semver, TRAVIS_TAG ${TRAVIS_TAG} differs from version ${PACKAGE_VERSION} in package.json" 1>&2
+    exit 1
+  fi
+fi
