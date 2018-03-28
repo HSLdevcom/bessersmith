@@ -50,7 +50,7 @@ The list of environment variables used by bessersmith:
 - `MQTT_SUB_CLIENT_ID`: The ClientId for the subscribing connection. Make sure this differs from all other ClientIds, e.g. by using a random suffix.
 - `MQTT_SUB_CLEAN`: A boolean on whether to use a clean session for subscribing. With `false` bessersmith asks for a persistent session.
 - `MQTT_SUB_USERNAME`: The username for the subscribing connection.
-- `MQTT_SUB_PASSWORD`: The passowrd for the subscribing connection.
+- `MQTT_SUB_PASSWORD`: The password for the subscribing connection.
 - `MQTT_SUB_QOS`: The Quality of Service level that bessersmith should subscribe with.
 - `MQTT_SUB_TOPIC`: The topic that bessersmith should subscribe to to get the custom MONO JSON messages.
 - `MQTT_PUB_URL`: The URL of the MQTT broker used for publishing. Running a broker on `localhost` may get useful.
@@ -58,7 +58,7 @@ The list of environment variables used by bessersmith:
 - `MQTT_PUB_CLIENT_ID`: The ClientId for the publishing connection. Make sure this differs from all other ClientIds, as well.
 - `MQTT_PUB_CLEAN`: A boolean on whether to use a clean session for publishing.
 - `MQTT_PUB_USERNAME`: The username for the publishing connection.
-- `MQTT_PUB_PASSWORD`: The passowrd for the publishing connection.
+- `MQTT_PUB_PASSWORD`: The password for the publishing connection.
 - `MQTT_PUB_QOS`: The Quality of Service level that bessersmith should publish with.
 - `MQTT_PUB_TOPIC`: The topic into which bessersmith should publish GTFS Realtime TripUpdates.
 - `CACHE_TTL_IN_SECONDS`: The time to live in seconds for any entry in the trip [cache](https://github.com/ptarjan/node-cache).
