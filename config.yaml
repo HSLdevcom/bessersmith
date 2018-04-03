@@ -31,6 +31,8 @@ mqtt:
       qos: 1
     # Required
     topic: "PUBLISH/GTFS/REALTIME/TRIPUPDATES"
+    # Required
+    logIntervalInSeconds: 60
 cacheTTLInSeconds: 7200
 # Required
 protoPath: "./gtfs-realtime.proto"

@@ -2,6 +2,22 @@ const _ = require("lodash");
 const mqtt = require("mqtt");
 
 const startPublishing = (config, log) => {
+  const { logIntervalInSeconds } = config;
+  let packetAmount = 0;
+  let logTimeout = null;
+  let logInterval = null;
+  if (!_.isUndefined(logIntervalInSeconds)) {
+    if (_.isFinite(logIntervalInSeconds) && logIntervalInSeconds > 0) {
+      logInterval = 1000 * config.logIntervalInSeconds;
+    } else {
+      log.fatal(
+        { logIntervalInSeconds },
+        "If given, logIntervalInSeconds must be a positive, finite number"
+      );
+      process.exit(1);
+    }
+  }
+
   const client = mqtt.connect(config.url, config.connectionOptions);
   const publish = msg => {
     client.publish(config.topic, msg, config.publishingOptions, err => {
@@ -10,6 +26,9 @@ const startPublishing = (config, log) => {
       }
     });
   };
+  client.on("packetsend", () => {
+    packetAmount += 1;
+  });
   client.on("error", err => {
     log.fatal(
       { err },
@@ -28,6 +47,15 @@ const startPublishing = (config, log) => {
       { connack },
       "Connecting to the MQTT broker for publishing succeeded"
     );
+    if (!_.isNull(logInterval) && _.isNull(logTimeout)) {
+      logTimeout = setInterval(() => {
+        log.info(
+          { packetAmountPerSecond: packetAmount / logIntervalInSeconds },
+          "Sending MQTT packets"
+        );
+        packetAmount = 0;
+      }, logInterval);
+    }
   });
   return publish;
 };

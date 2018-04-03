@@ -61,5 +61,6 @@ The list of environment variables used by bessersmith:
 - `MQTT_PUB_PASSWORD`: The password for the publishing connection.
 - `MQTT_PUB_QOS`: The Quality of Service level that bessersmith should publish with.
 - `MQTT_PUB_TOPIC`: The topic into which bessersmith should publish GTFS Realtime TripUpdates.
+- `MQTT_PUB_LOG_INTERVAL_IN_SECONDS`: The interval for logging the amount of MQTT packets sent per second over the publishing connection.
 - `CACHE_TTL_IN_SECONDS`: The time to live in seconds for any entry in the trip [cache](https://github.com/ptarjan/node-cache).
 - `PROTO_PATH`: The path to the GTFS Realtime protocol buffer schema file.
