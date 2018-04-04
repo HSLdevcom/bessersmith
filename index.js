@@ -57,7 +57,9 @@ const constructConfigFromEnvironment = () => {
           qos: toNumberOrUndefined(process.env.MQTT_PUB_QOS)
         },
         topic: process.env.MQTT_PUB_TOPIC,
-        logIntervalInSeconds: process.env.MQTT_PUB_LOG_INTERVAL_IN_SECONDS
+        logIntervalInSeconds: toNumberOrUndefined(
+          process.env.MQTT_PUB_LOG_INTERVAL_IN_SECONDS
+        )
       }
     },
     cacheTTLInSeconds: toNumberOrUndefined(process.env.CACHE_TTL_IN_SECONDS),
