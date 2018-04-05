@@ -49,10 +49,7 @@ const startPublishing = (config, log) => {
     );
     if (!_.isNull(logInterval) && _.isNull(logTimeout)) {
       logTimeout = setInterval(() => {
-        log.info(
-          { packetAmountPerSecond: packetAmount / logIntervalInSeconds },
-          "Sending MQTT packets"
-        );
+        log.info({ packetAmount }, "Sending MQTT packets");
         packetAmount = 0;
       }, logInterval);
     }
