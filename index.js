@@ -36,6 +36,9 @@ const constructConfigFromEnvironment = () => {
           port: toNumberOrUndefined(process.env.MQTT_SUB_PORT),
           clientId: process.env.MQTT_SUB_CLIENT_ID,
           clean: process.env.MQTT_SUB_CLEAN,
+          reconnectPeriod: toNumberOrUndefined(
+            process.env.MQTT_SUB_RECONNECT_PERIOD
+          ),
           username: process.env.MQTT_SUB_USERNAME,
           password: process.env.MQTT_SUB_PASSWORD
         },
@@ -50,6 +53,9 @@ const constructConfigFromEnvironment = () => {
           port: toNumberOrUndefined(process.env.MQTT_PUB_PORT),
           clientId: process.env.MQTT_PUB_CLIENT_ID,
           clean: process.env.MQTT_PUB_CLEAN,
+          reconnectPeriod: toNumberOrUndefined(
+            process.env.MQTT_PUB_RECONNECT_PERIOD
+          ),
           username: process.env.MQTT_PUB_USERNAME,
           password: process.env.MQTT_PUB_PASSWORD
         },

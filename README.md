@@ -49,6 +49,7 @@ The list of environment variables used by bessersmith:
 - `MQTT_SUB_PORT`: The port for the MQTT broker used for subscribing.
 - `MQTT_SUB_CLIENT_ID`: The ClientId for the subscribing connection. Make sure this differs from all other ClientIds, e.g. by using a random suffix.
 - `MQTT_SUB_CLEAN`: A boolean on whether to use a clean session for subscribing. With `false` bessersmith asks for a persistent session.
+- `MQTT_SUB_RECONNECT_PERIOD`: The interval in milliseconds between consecutive reconnection attempts for the subscribing connection.
 - `MQTT_SUB_USERNAME`: The username for the subscribing connection.
 - `MQTT_SUB_PASSWORD`: The password for the subscribing connection.
 - `MQTT_SUB_QOS`: The Quality of Service level that bessersmith should subscribe with.
@@ -57,6 +58,7 @@ The list of environment variables used by bessersmith:
 - `MQTT_PUB_PORT`: The port for the MQTT broker used for publishing.
 - `MQTT_PUB_CLIENT_ID`: The ClientId for the publishing connection. Make sure this differs from all other ClientIds, as well.
 - `MQTT_PUB_CLEAN`: A boolean on whether to use a clean session for publishing.
+- `MQTT_PUB_RECONNECT_PERIOD`: The interval in milliseconds between consecutive reconnection attempts for the publishing connection.
 - `MQTT_PUB_USERNAME`: The username for the publishing connection.
 - `MQTT_PUB_PASSWORD`: The password for the publishing connection.
 - `MQTT_PUB_QOS`: The Quality of Service level that bessersmith should publish with.
