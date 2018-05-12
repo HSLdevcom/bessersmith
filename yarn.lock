@@ -159,6 +159,10 @@ browser-stdout@1.3.1:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/browser-stdout/-/browser-stdout-1.3.1.tgz#baa559ee14ced73452229bad7326467c61fabd60"
 
+buffer-from@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/buffer-from/-/buffer-from-1.0.0.tgz#4cb8832d23612589b0406e9e2956c17f06fdf531"
+
 builtin-modules@^1.0.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/builtin-modules/-/builtin-modules-1.1.1.tgz#270f076c5a72c02f5b65a47df94c5fe3a278892f"
@@ -269,10 +273,19 @@ concat-map@0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/concat-map/-/concat-map-0.0.1.tgz#d8a96bd77fd68df7793a73036a3ba0d5405d477b"
 
-concat-stream@^1.6.0, concat-stream@^1.6.1:
+concat-stream@^1.6.0:
   version "1.6.1"
   resolved "https://registry.yarnpkg.com/concat-stream/-/concat-stream-1.6.1.tgz#261b8f518301f1d834e36342b9fea095d2620a26"
   dependencies:
+    inherits "^2.0.3"
+    readable-stream "^2.2.2"
+    typedarray "^0.0.6"
+
+concat-stream@^1.6.2:
+  version "1.6.2"
+  resolved "https://registry.yarnpkg.com/concat-stream/-/concat-stream-1.6.2.tgz#904bdf194cd3122fc675c77fc4ac3d4ff0fd1a34"
+  dependencies:
+    buffer-from "^1.0.0"
     inherits "^2.0.3"
     readable-stream "^2.2.2"
     typedarray "^0.0.6"
@@ -954,31 +967,31 @@ moment@^2.10.6, moment@^2.22.1:
   version "2.22.1"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.22.1.tgz#529a2e9bf973f259c9643d237fda84de3a26e8ad"
 
-mqtt-packet@^5.5.0:
-  version "5.5.0"
-  resolved "https://registry.yarnpkg.com/mqtt-packet/-/mqtt-packet-5.5.0.tgz#7f53244ba49fdecf795e950c14a9432dbf33bc63"
+mqtt-packet@^5.6.0:
+  version "5.6.0"
+  resolved "https://registry.yarnpkg.com/mqtt-packet/-/mqtt-packet-5.6.0.tgz#923fb704d0ce0bd6ac81c7e1cc09469b1512d2fd"
   dependencies:
     bl "^1.2.1"
     inherits "^2.0.3"
     process-nextick-args "^2.0.0"
     safe-buffer "^5.1.0"
 
-mqtt@^2.13.0:
-  version "2.16.0"
-  resolved "https://registry.yarnpkg.com/mqtt/-/mqtt-2.16.0.tgz#dfccb08c933d845d1f23c61168527076dc609265"
+mqtt@^2.18.0:
+  version "2.18.0"
+  resolved "https://registry.yarnpkg.com/mqtt/-/mqtt-2.18.0.tgz#e3b239263a99a318beaf2cd5b8ef00a3d4eb7a60"
   dependencies:
     commist "^1.0.0"
-    concat-stream "^1.6.1"
+    concat-stream "^1.6.2"
     end-of-stream "^1.4.1"
     help-me "^1.0.1"
     inherits "^2.0.3"
     minimist "^1.2.0"
-    mqtt-packet "^5.5.0"
+    mqtt-packet "^5.6.0"
     pump "^3.0.0"
-    readable-stream "^2.3.4"
+    readable-stream "^2.3.6"
     reinterval "^1.1.0"
     split2 "^2.1.1"
-    websocket-stream "^5.0.1"
+    websocket-stream "^5.1.2"
     xtend "^4.0.1"
 
 ms@2.0.0:
@@ -1218,7 +1231,7 @@ read-pkg@^2.0.0:
     normalize-package-data "^2.3.2"
     path-type "^2.0.0"
 
-"readable-stream@> 1.0.0 < 3.0.0", readable-stream@^2.0.0, readable-stream@^2.0.1, readable-stream@^2.0.5, readable-stream@^2.1.5, readable-stream@^2.2.2, readable-stream@^2.3.3, readable-stream@^2.3.4:
+"readable-stream@> 1.0.0 < 3.0.0", readable-stream@^2.0.0, readable-stream@^2.0.1, readable-stream@^2.0.5, readable-stream@^2.1.5, readable-stream@^2.2.2, readable-stream@^2.3.3:
   version "2.3.5"
   resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-2.3.5.tgz#b4f85003a938cbb6ecbce2a124fb1012bd1a838d"
   dependencies:
@@ -1228,6 +1241,18 @@ read-pkg@^2.0.0:
     process-nextick-args "~2.0.0"
     safe-buffer "~5.1.1"
     string_decoder "~1.0.3"
+    util-deprecate "~1.0.1"
+
+readable-stream@^2.3.6:
+  version "2.3.6"
+  resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-2.3.6.tgz#b11c27d88b8ff1fbe070643cf94b0c79ae1b0aaf"
+  dependencies:
+    core-util-is "~1.0.0"
+    inherits "~2.0.3"
+    isarray "~1.0.0"
+    process-nextick-args "~2.0.0"
+    safe-buffer "~5.1.1"
+    string_decoder "~1.1.1"
     util-deprecate "~1.0.1"
 
 regexpp@^1.0.1:
@@ -1381,6 +1406,12 @@ string_decoder@~1.0.3:
   dependencies:
     safe-buffer "~5.1.0"
 
+string_decoder@~1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/string_decoder/-/string_decoder-1.1.1.tgz#9cf1611ba62685d7030ae9e4ba34149c3af03fc8"
+  dependencies:
+    safe-buffer "~5.1.0"
+
 strip-ansi@^3.0.0:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/strip-ansi/-/strip-ansi-3.0.1.tgz#6a385fb8853d952d5ff05d0e8aaf94278dc63dcf"
@@ -1503,7 +1534,7 @@ validate-npm-package-license@^3.0.1:
     spdx-correct "^3.0.0"
     spdx-expression-parse "^3.0.0"
 
-websocket-stream@^5.0.1:
+websocket-stream@^5.1.2:
   version "5.1.2"
   resolved "https://registry.yarnpkg.com/websocket-stream/-/websocket-stream-5.1.2.tgz#1c31c627bcdf34f1a9bdacc9daa15bfa4816d9ad"
   dependencies:
