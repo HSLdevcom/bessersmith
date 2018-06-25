@@ -18,7 +18,10 @@ const startPublishing = (config, log) => {
     }
   }
 
-  const client = mqtt.connect(config.url, config.connectionOptions);
+  const client = mqtt.connect(
+    config.url,
+    config.connectionOptions
+  );
   const publish = msg => {
     client.publish(config.topic, msg, config.publishingOptions, err => {
       if (err) {
@@ -74,7 +77,10 @@ const createSubscriptionCallback = (topic, log) => {
 };
 
 const startSubscription = (config, log, cache, handleMessage) => {
-  const client = mqtt.connect(config.url, config.connectionOptions);
+  const client = mqtt.connect(
+    config.url,
+    config.connectionOptions
+  );
   client.on("message", handleMessage);
   client.on("error", err => {
     log.fatal(
