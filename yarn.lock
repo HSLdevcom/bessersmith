@@ -1049,9 +1049,9 @@ ncp@~2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/ncp/-/ncp-2.0.0.tgz#195a21d6c46e361d2fb1281ba38b91e9df7bdbb3"
 
-neodoc@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/neodoc/-/neodoc-2.0.1.tgz#340f7610a9fba831efb69b633148a00f59e863bc"
+neodoc@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/neodoc/-/neodoc-2.0.2.tgz#ad00b30b9758379dcd3cf752a0659bacbab2c4fb"
   dependencies:
     ansi-regex "^2.0.0"
 
