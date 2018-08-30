@@ -1064,9 +1064,9 @@ mqtt-packet@^5.6.0:
     process-nextick-args "^2.0.0"
     safe-buffer "^5.1.0"
 
-mqtt@^2.18.7:
-  version "2.18.7"
-  resolved "https://registry.yarnpkg.com/mqtt/-/mqtt-2.18.7.tgz#abd87f6665488b768921e33cd8ce5e1959679412"
+mqtt@^2.18.8:
+  version "2.18.8"
+  resolved "https://registry.yarnpkg.com/mqtt/-/mqtt-2.18.8.tgz#9d213ccab92151accfb21ee8c0860dc6866ab259"
   dependencies:
     commist "^1.0.0"
     concat-stream "^1.6.2"
