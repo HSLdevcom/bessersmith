@@ -996,9 +996,9 @@ lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.4, lodash@^4.17.5:
   version "4.17.11"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.11.tgz#b39ea6229ef607ecd89e2c8df12536891cac9b8d"
 
-lolex@^2.7.3:
-  version "2.7.3"
-  resolved "https://registry.yarnpkg.com/lolex/-/lolex-2.7.3.tgz#5d342280543993aca4be31df9e462963a178e45b"
+lolex@^2.7.4:
+  version "2.7.4"
+  resolved "https://registry.yarnpkg.com/lolex/-/lolex-2.7.4.tgz#6514de2c3291e9d6f09d49ddce4a95f7d4d5a93f"
 
 long@^4.0.0:
   version "4.0.0"
