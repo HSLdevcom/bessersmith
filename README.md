@@ -1,3 +1,7 @@
+# ⚠️ ARCHIVED
+
+This repository is archived and read-only. For active development, go to [Transitdata](https://github.com/HSLdevcom/transitdata).
+
 # bessersmith [![Travis](https://img.shields.io/travis/HSLdevcom/bessersmith.svg)](https://travis-ci.org/HSLdevcom/bessersmith) [![GitHub package version](https://img.shields.io/github/package-json/v/HSLdevcom/bessersmith.svg)](https://github.com/HSLdevcom/bessersmith/releases)
 
 Transform the custom MONO JSON feed (`mono/#` at `mqtt.hsl.fi`) into GTFS Realtime TripUpdates.
